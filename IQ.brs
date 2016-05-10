@@ -1,5 +1,5 @@
 
-'IQ SDK. Use only the public methods, prefixed by : FIXME
+'IQ SDK. Use only the public methods, not prefixed by "private_".
 'To be used correctly, init should be called when the player is loaded. Then setContentMetadata
 'should be called whenever the video content changes. The notification period for the video content
 'should also be set byt the user to one second if possible, for optimal event reporting.
@@ -12,7 +12,7 @@ function IQ() as Object
         'Initialization method : Should be called when the player is created
 
         init : function(Pcode, TestMode = false as Boolean, callback = emptyCallback, testMObject = createObject("roAssociativeArray")) as Void
-            m.private_debugEnabled = true
+            m.private_debugEnabled = false
             m.contentMetadata = {} 'Video metadata (duration, type, etc. Provided by the user
             m.liveContent = false 'A boolean that should be true when a live event is shown'    
             m.dateTime = createObject("roDateTime") 'dateTime object used to compute the current time
@@ -67,7 +67,8 @@ function IQ() as Object
                             }    
            
            m.base.AddReplace("analyticsSdkName","ooyala-roku-analytics-sdk") 
-           m.base.AddReplace("analyticsSdkVersion","1.0.0") 
+           m.base.AddReplace("analyticsSdkVersion","1.0.1") 
+           m.base.AddReplace("player", m.private_getPlayerInfo())
            m.base.AddReplace("device", m.private_getDeviceInfo())
            m.base.AddReplace("sessionId",m.private_makeSessionID())'We can start preparing our JSON
            m.base.AddReplace("sessionStartTime", m.dateTime.ToISOSTRING())
@@ -174,17 +175,28 @@ function IQ() as Object
         
         '===========================Private methods============================
 
+        'Gets the player info
+        private_getPlayerInfo : function() as Object
+            roDeviceInfo = CreateObject("roDeviceInfo")
+            playerInfo = {}
+            playerInfo.AddReplace("name", "roku")
+            playerInfo.AddReplace("version", roDeviceInfo.getVersion())
+            playerInfo.AddReplace("id", "roku")
+            return playerInfo
+        end function
+
         'Gets the device related info
         private_getDeviceInfo : function() as Object
             roDeviceInfo = CreateObject("roDeviceInfo")
             info = {}
             deviceInfo = {}
-            deviceInfo.AddReplace("os", "Roku OS")
+            deviceInfo.AddReplace("os", "rokuos")
             deviceInfo.AddReplace("osVersion", roDeviceInfo.getVersion())
             deviceInfo.AddReplace("deviceBrand", "Roku")
+            deviceInfo.AddReplace("browser", "roku_sdk")
             deviceInfo.AddReplace("deviceType", "settop")
             deviceInfo.AddReplace("model", roDeviceInfo.getModel())
-            info.deviceInfo = deviceInfo
+            info.AddReplace("deviceInfo",deviceInfo)
             info.id = roDeviceInfo.GetDeviceUniqueId()
             return info
         end function
