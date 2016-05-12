@@ -8,11 +8,11 @@ The minimum Roku OS version compatible with this library is v7.
 
 ## Getting started
 
-See the [Getting Started tutorial](tutorial-getting_started.html) for information about how to use the library.
+See the [Getting Started tutorial](http://apidocs.ooyala.com/iq_roku/tutorial-getting_started.html) for information about how to use the library.
 
 ## Documentation 
 
-The documentation can be found [here](apidocs.ooyala.com/iq_roku/index.html).
+The documentation can be found [here](http://apidocs.ooyala.com/iq_roku/index.html).
 
 ## Sample app
 
